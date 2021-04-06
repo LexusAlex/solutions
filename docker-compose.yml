@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+    php-cli:
+        build:
+            context: ./docker/php-cli
+            dockerfile: Dockerfile
+        volumes:
+            - ./:/solutions
+    nginx:
+        build:
+            context: ./docker/nginx
+            dockerfile: Dockerfile
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/solutions
+        depends_on:
+            - php-fpm
+    php-fpm:
+        build:
+            context: ./docker/php-fpm
+            dockerfile: Dockerfile
+        environment:
+            PHP_COMPACT_ENV: dev
+        volumes:
+            - ./:/solutions
+    mariadb:
+        image: mariadb:10.5
+        environment:
+            MYSQL_ROOT_PASSWORD: solutions
+            MYSQL_DATABASE: solutions
+        volumes:
+            - mariadb:/var/lib/mysql
+            - ./docker/mariadb/conf.d/:/etc/mysql/conf.d/
+        ports:
+            - "3306:3306"
+volumes:
+    mariadb:
