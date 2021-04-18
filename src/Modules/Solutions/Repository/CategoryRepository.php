@@ -28,7 +28,11 @@ final class CategoryRepository
         $data['title'] = $category->getTitle();
         $data['created_at'] = $category->getCreatedAt();
 
-        // создание категории
         $this->queryFactory->newInsert('category', $data);
+    }
+
+    public function getCategories(): array
+    {
+        return $this->queryFactory->newSelect('category');
     }
 }

@@ -31,6 +31,12 @@ final class QueryFactory
         return $statement->execute($result);
     }
 
+    public function newSelect(string $table): array
+    {
+        $statement = $this->connection->query('SELECT * FROM '.$table);
+        return $statement->fetchAll();
+    }
+
 /*
 
     public function newSelect(string $table): Query

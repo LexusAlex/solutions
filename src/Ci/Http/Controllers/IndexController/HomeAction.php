@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Solutions\Ci\Http\Controllers\IndexController;
 
-use App\Domain\User\Repository\CategoryRepository;
-use PDO;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -17,18 +15,15 @@ class HomeAction implements RequestHandlerInterface
 {
 
     private PhpRenderer $view;
-    private CategoryRepository $CategoryRepository;
 
-    public function __construct(PhpRenderer $view, PDO $connection)
+    public function __construct(PhpRenderer $view)
     {
         $this->view = $view;
-        $this->connection = $connection;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = new HtmlResponse();
-        var_dump($this->connection);
-        return $this->view->render($response, 'controllers/index/home.php', ['d' => '1234213213213213123']);
+        return $this->view->render($response, 'controllers/index/home.php', ['title' => 'Главная']);
     }
 }
