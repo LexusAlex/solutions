@@ -25,6 +25,18 @@
         "php-di/php-di": "^6.3",
         "laminas/laminas-config-aggregator": "^1.5",
         "vlucas/phpdotenv": "^5.3",
-         "ext-pdo": "*"
+        "ext-pdo": "*",
+        "selective/array-reader": "^1.1",
+        "symfony/validator": "^5.2",
+        "doctrine/annotations": "^1.12",
+        "doctrine/cache": "^1.10",
+        "robmorgan/phinx": "^0.12.6",
+        "symfony/yaml": "^5.2",
+        "ramsey/uuid": "^4.1",
+        "webmozart/assert": "^1.10",
+        "tuupola/slim-basic-auth": "^3.3"
+    },
+    "scripts": {
+        "phinx": "phinx"
     }
 }

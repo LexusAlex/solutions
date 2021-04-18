@@ -1,0 +1,15 @@
+docker-compose run --rm php-cli composer require slim/slim slim/psr7 slim/php-view
+docker-compose run --rm php-cli composer require php-di/php-di laminas/laminas-config-aggregator vlucas/phpdotenv
+docker-compose run --rm php-cli composer dump-autoload
+docker-compose run --rm php-cli composer remove cakephp/database
+docker-compose run --rm php-cli composer require selective/array-reader
+docker-compose run --rm php-cli composer require symfony/validator doctrine/annotations
+docker-compose run --rm php-cli composer require doctrine/cache
+docker-compose run --rm php-cli composer require robmorgan/phinx
+docker-compose run --rm php-cli composer require symfony/yaml
+docker-compose run --rm php-cli composer require ramsey/uuid
+docker-compose run --rm php-cli composer require webmozart/assert
+docker-compose run --rm php-cli composer require tuupola/slim-basic-auth
+https://github.com/odan/slim4-skeleton/blob/master/src/Responder/Responder.php
+
+https://getbootstrap.com/docs/4.6/examples/product/
