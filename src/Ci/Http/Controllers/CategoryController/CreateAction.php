@@ -34,10 +34,12 @@ class CreateAction implements RequestHandlerInterface
 
         if ($method === 'POST') {
             $data = $request->getParsedBody();
+            print_r($data);
             $command = new Command();
             $command->title = $data['Category']['title'] ?? '';
+            $command->parent_id = $data['Category']['parent_id'] ?? '0';
 
-            $this->validator->validate($command);
+            //$this->validator->validate($command);
             $this->handler->handle($command);
 
             return $response->withRedirect($response, '/category/list');

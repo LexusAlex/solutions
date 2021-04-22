@@ -12,15 +12,14 @@ final class Category
     private Id $id;
     private Title $title;
     private DateTimeImmutable $created_at;
+    private ParentId $parent_id;
 
-    public function __construct(Id $id, Title $title, DateTimeImmutable $created_at)
+    public function __construct(Id $id, Title $title, DateTimeImmutable $created_at, ParentId $parent_id)
     {
         $this->id = $id;
         $this->title = $title;
         $this->created_at = $created_at;
-        //$reader = new ArrayReader($data);
-        //$this->id = $reader->findInt('id');
-        //$this->title = $reader->findString('title');
+        $this->parent_id = $parent_id;
     }
 
     /**
@@ -36,6 +35,11 @@ final class Category
         return $this->id->getValue();
     }
 
+    public function getParentId(): string
+    {
+        return $this->parent_id->getValue();
+    }
+
     /**
      * @return int
      */
@@ -48,8 +52,9 @@ final class Category
         Id $id,
         Title $title,
         DateTimeImmutable $created_at,
+        ParentId $parent_id
     ): self {
-        $category = new self($id, $title, $created_at);
+        $category = new self($id, $title, $created_at, $parent_id);
         return $category;
     }
 }

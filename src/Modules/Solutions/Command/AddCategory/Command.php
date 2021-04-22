@@ -10,7 +10,7 @@ class Command
 {
     /**
      * @Assert\NotBlank(
-     *     message = "Это значение не должно быть пустым"
+     *     message = "Название категории - не должно быть пустым"
      * )
      * @Assert\Length(
      *      max = 50,
@@ -18,4 +18,6 @@ class Command
      * )
      */
     public string $title = '';
+
+    public string $parent_id = '';
 }

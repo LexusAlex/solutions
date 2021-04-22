@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Views\PhpRenderer;
 use Solutions\Ci\Http\Response\HtmlResponse;
-use Solutions\Modules\Solutions\Query\getCategories\Handler;
+use Solutions\Modules\Solutions\Query\GetCategories\Handler;
 
 
 class ListAction implements RequestHandlerInterface
@@ -30,6 +30,6 @@ class ListAction implements RequestHandlerInterface
 
         $categories = $this->handler->handle();
 
-        return $this->view->render($response, 'controllers/category/list.php', ['title' => 'Список категорий']);
+        return $this->view->render($response, 'controllers/category/list.php', ['title' => 'Список категорий', 'categories' => $categories]);
     }
 }

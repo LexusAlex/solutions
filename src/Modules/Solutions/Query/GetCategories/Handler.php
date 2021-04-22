@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Solutions\Modules\Solutions\Query\getCategories;
+namespace Solutions\Modules\Solutions\Query\GetCategories;
 
 use Solutions\Modules\Solutions\Repository\CategoryRepository;
 

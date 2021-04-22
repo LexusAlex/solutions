@@ -27,6 +27,7 @@ final class CategoryRepository
         $data['id'] = $category->getId();
         $data['title'] = $category->getTitle();
         $data['created_at'] = $category->getCreatedAt();
+        $data['parent_id'] = $category->getParentId();
 
         $this->queryFactory->newInsert('category', $data);
     }
