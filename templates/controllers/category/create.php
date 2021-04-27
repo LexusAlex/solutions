@@ -1,6 +1,5 @@
 <div class="row">
-    <div class="col-4"></div>
-    <div class="col-8">
+    <div class="col-12">
         <div class="card border-success">
             <div class="card-header bg-transparent border-success">
                 <div>
@@ -21,8 +20,8 @@
                 if (count($errors) > 0) {
 
                 ?>
-                    <div class="alert alert-danger" role="alert">
-                        <ul>
+                    <div >
+                        <ul class="alert alert-danger">
                         <?php
                             foreach ($errors as $key => $error) {
                                echo '<li>'.$error.'</li>';
@@ -40,7 +39,13 @@
                     <div class="form-group">
                         <label for="CategoryCreate">Родительский раздел</label>
                         <select id="CategoryParentId" class="custom-select custom-select-sm" name="Category[parent_id]">
-                            <option selected value="0">Корневой элемент</option>
+                            <?php
+                            /**
+                             * @var array $categories
+                             */
+                                foreach ($categories as $key => $category) { ?>
+                                    <option value="<?php echo $category['id']?>"><?php echo $category['title'];?></option>
+                               <?php } ?>
                         </select>
                         <small id="categoryHelp" class="form-text text-muted">Выберете родительский раздел</small>
                     </div>
@@ -48,7 +53,5 @@
                 </form>
             </div>
         </div>
-
-
     </div>
 </div>

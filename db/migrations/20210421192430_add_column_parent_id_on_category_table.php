@@ -15,10 +15,6 @@ final class AddColumnParentIdOnCategoryTable extends AbstractMigration
 
         $this->execute($sql);
         $this->execute($sql2);
-
-        $sql3 = "INSERT INTO category (id, title, created_at, parent_id) VALUES (0, 'root', ".time().", 0)";
-
-        $this->execute($sql3);
     }
 
     public function down()

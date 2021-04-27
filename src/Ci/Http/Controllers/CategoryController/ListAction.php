@@ -9,16 +9,16 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Views\PhpRenderer;
 use Solutions\Ci\Http\Response\HtmlResponse;
-use Solutions\Modules\Solutions\Query\GetCategories\Handler;
+use Solutions\Modules\Solutions\Query\GetCategories\GetCategories;
 
 
 class ListAction implements RequestHandlerInterface
 {
 
     private PhpRenderer $view;
-    private Handler $handler;
+    private GetCategories $handler;
 
-    public function __construct(PhpRenderer $view, Handler $handler)
+    public function __construct(PhpRenderer $view, GetCategories $handler)
     {
         $this->view = $view;
         $this->handler = $handler;
@@ -29,7 +29,8 @@ class ListAction implements RequestHandlerInterface
         $response = new HtmlResponse();
 
         $categories = $this->handler->handle();
-
+        //$categories = buildTreeFromArray($categories);
+        //$categories[0]['children'][1]
         return $this->view->render($response, 'controllers/category/list.php', ['title' => 'Список категорий', 'categories' => $categories]);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Solutions\Modules\Solutions\Entity\Category;
 
+use JetBrains\PhpStorm\Pure;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
@@ -27,7 +28,7 @@ final class Id
         return $this->value;
     }
 
-    public function __toString(): string
+    #[Pure] public function __toString(): string
     {
         return $this->getValue();
     }

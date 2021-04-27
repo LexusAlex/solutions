@@ -16,3 +16,7 @@ run-migrations:
 	docker-compose run --rm php-cli composer phinx migrate -- -e development
 rollback-migration:
 	docker-compose run --rm php-cli composer phinx rollback
+create-data-file:
+	docker-compose run --rm --user="1000" php-cli composer phinx -- seed:create $(name)
+add-data-file:
+	docker-compose run --rm php-cli composer phinx -- seed:run -s $(name)

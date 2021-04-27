@@ -6,7 +6,7 @@ namespace Solutions\Modules\Solutions\Query\GetCategories;
 
 use Solutions\Modules\Solutions\Repository\CategoryRepository;
 
-final class Handler
+final class GetCategories
 {
     private CategoryRepository $categoryRepository;
 
