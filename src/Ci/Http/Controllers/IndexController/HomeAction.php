@@ -10,10 +10,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Views\PhpRenderer;
 use Solutions\Ci\Http\Response\HtmlResponse;
 
-
 class HomeAction implements RequestHandlerInterface
 {
-
     private PhpRenderer $view;
 
     public function __construct(PhpRenderer $view)
@@ -21,9 +19,13 @@ class HomeAction implements RequestHandlerInterface
         $this->view = $view;
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = new HtmlResponse();
+
         return $this->view->render($response, 'controllers/index/home.php', ['title' => 'Главная']);
     }
 }

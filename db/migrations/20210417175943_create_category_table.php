@@ -10,7 +10,7 @@ final class CreateCategoryTable extends AbstractMigration
         $sql = 'CREATE TABLE IF NOT EXISTS `category` (
           `id` VARCHAR(255) NOT NULL,
           `title` VARCHAR(255) NOT NULL,
-          `created_at` INT NOT NULL,
+          `created_at` DATETIME NOT NULL,
           PRIMARY KEY (`id`)
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;';
 

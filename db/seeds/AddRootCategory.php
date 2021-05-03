@@ -15,8 +15,11 @@ class AddRootCategory extends AbstractSeed
      */
     public function run()
     {
-        $sql = "INSERT INTO category (id, title, created_at, parent_id) VALUES (0, 'Коревой элемент', ".time().", 0)";
+        $date = new DateTimeImmutable();
+        $current_date = $date->format('Y-m-d H:i:s');
 
+        //2021-05-03 01:33:37
+        $sql = "INSERT INTO category (id, title, created_at, parent_id) VALUES (0, 'Корневой элемент', "."'".$current_date."'".", 0)";
         $this->execute($sql);
     }
 }

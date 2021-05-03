@@ -31,10 +31,38 @@ final class QueryFactory
         return $statement->execute($result);
     }
 
-    public function newSelect(string $table): array
+    public function newUpdate(string $table, array $data): bool
+    {
+        $keys = array_keys($data);
+        $result = [];
+        $id = "'".$data['id']."'";
+        foreach ($data as $key => $value) {
+            if ($key != 'id') {
+                $result[$key.'='.':' . $key] = $value;
+            }
+        }
+
+        //UPDATE Customers SET rating = 200 WHERE snum = 1001;
+        $sql = "UPDATE ".$table." SET ".implode(',',array_keys($result))." WHERE id=".$id;
+
+        $statement = $this->connection->prepare($sql);
+        $statement->bindParam(':title',$data['title']);
+        $statement->bindParam(':created_at',$data['created_at']);
+        $statement->bindParam(':parent_id',$data['parent_id']);
+        $statement->execute($result);
+
+    }
+
+    public function newSelectAll(string $table): array
     {
         $statement = $this->connection->query('SELECT * FROM '.$table);
         return $statement->fetchAll();
+    }
+
+    public function newSelectOne(string $table, string $id): object
+    {
+        $statement = $this->connection->query('SELECT * FROM '.$table.' WHERE id='."'". $id."'");
+        return $statement->fetchObject();
     }
 
 /*

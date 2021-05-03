@@ -41,11 +41,11 @@ final class Category
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getCreatedAt(): int
+    public function getCreatedAt(): string
     {
-        return $this->created_at->getTimestamp();
+        return $this->created_at->format('Y-m-d H:i:s');
     }
 
     #[Pure] public static function addCategory(
@@ -54,7 +54,15 @@ final class Category
         DateTimeImmutable $created_at,
         ParentId $parent_id
     ): self {
-        $category = new self($id, $title, $created_at, $parent_id);
-        return $category;
+        return new self($id, $title, $created_at, $parent_id);
+    }
+
+    #[Pure] public static function updateCategory(
+        Id $id,
+        Title $title,
+        DateTimeImmutable $created_at,
+        ParentId $parent_id
+    ): self {
+        return new self($id, $title, $created_at, $parent_id);
     }
 }

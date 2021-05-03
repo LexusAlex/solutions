@@ -10,6 +10,208 @@ docker-compose run --rm php-cli composer require symfony/yaml
 docker-compose run --rm php-cli composer require ramsey/uuid
 docker-compose run --rm php-cli composer require webmozart/assert
 docker-compose run --rm php-cli composer require tuupola/slim-basic-auth
+docker-compose run --rm php-cli composer require artnv/tree-builder
+docker-compose run --rm php-cli composer remove bluem/tree
 https://github.com/odan/slim4-skeleton/blob/master/src/Responder/Responder.php
 
 https://getbootstrap.com/docs/4.6/examples/product/
+
+https://gist.github.com/vyspiansky/6552875
+
+https://stackoverflow.com/questions/8840319/build-a-tree-from-a-flat-array-in-php
+
+
+---------------------------
+<?php
+
+declare(strict_types=1);
+
+namespace Solutions\Support;
+
+use JetBrains\PhpStorm\Pure;
+
+class BuilderTree
+{
+    /**
+     * Входной массив
+     * @var array $input
+     */
+    private array $input;
+    /**
+     * Псевдонимы для полей
+     * @var array|string[] $aliases
+     */
+    private array $aliases = [
+        'id' => 'id',
+        'parent' => 'parent',
+        'title' => 'title',
+        'child' => 'child',
+        'position' => 'position'
+    ];
+    /**
+     * Параметры пользователя
+     * @var array $userParams
+     */
+    private array $userParams;
+    /**
+     * Включение сортировки
+     * @var bool
+     */
+    private bool $sortEnabled = false;
+    /**
+     * Итоговый HTML
+     * @var string $html
+     */
+    private string $html;
+    /**
+     * Выходной массив
+     * @var array $output
+     */
+    private array $output;
+    /**
+     * Длина входного масссива
+     * @var int $inputLength
+     */
+    private int $inputLength;
+
+    /**
+     * Временный массив
+     * @var array $inputTmp
+     */
+    private array $inputTmp;
+    private $parentsArr;
+    private $childsArr;
+    private $nestingLevel = 0;
+
+    /**
+     * Подготовливаем объект
+     * @param array $input
+     * @param array|null $aliases
+     * @param array $userParams
+     * @param bool $sortEnabled
+     * @return static
+     */
+    #[Pure] public static function createObject(array $input,
+                                                array $aliases = null,
+                                                array $userParams = [],
+                                                bool $sortEnabled = true
+    ): static
+    {
+        $builderTree = new static();
+        $builderTree->html = '';
+        $builderTree->output = [];
+        $builderTree->userParams = $userParams;
+        $builderTree->input = $input;
+        $builderTree->inputLength = count($input);
+        $builderTree->sortEnabled = $sortEnabled;
+
+        if ($aliases) {
+            foreach ($aliases as $alias => $val) {
+                if ($builderTree->aliases[$alias]) {
+                    $builderTree->aliases[$alias] = $val;
+                }
+            }
+        }
+        return $builderTree;
+    }
+
+    public function getTree()
+    {
+        if ($this->output) {
+            return $this->output;
+        } else {
+            $this->resetTmpData();
+            $this->makeMainTree();
+            $this->recursiveSearch($this->output);
+
+            return $this->output;
+        }
+    }
+
+    /**
+     * Очистка временного массива
+     */
+    public function resetTmpData()
+    {
+        $this->inputTmp = $this->input;
+    }
+
+    private function makeMainTree()
+    {
+        $length = $this->inputLength;
+        $inputTmp = &$this->inputTmp;
+
+        // Итерируемся в обратную сторону исходя из длины массива выясняя родительские элементы
+        while ($length--) {
+            if ($inputTmp[$length][$this->aliases['parent']] == 0) {
+                $this->output[] = $inputTmp[$length];
+                unset($inputTmp[$length]); // Удаляем родительские узлы с parent = 0 из временного массива;
+            }
+
+        }
+        // сортируем массив
+        $this->output = $this->sort($this->output);
+    }
+
+    protected function sort($arr)
+    {
+        if (!$this->sortEnabled) {
+            return $arr;
+        }
+
+        if ($arr && count($arr) >= 1) {
+
+            usort($arr, function ($a, $b) {
+                return ($a[$this->aliases['position']] - $b[$this->aliases['position']]);
+            });
+        }
+        return $arr;
+    }
+
+    // Рекурсивный поиск дочерних элементов по общему массиву
+    private function recursiveSearch(&$output)
+    {
+        $aliases = $this->aliases;
+        $outputLength = count($output);
+
+        // Пробегаемся по новому массиву $outputArr, по "родителям"
+        while ($outputLength--) {
+            $inputLength = $this->inputLength;
+
+            // Сравниваем с элементами из общего массива
+            while ($inputLength--) {
+
+                if (isset($this->inputTmp[$inputLength])) {
+
+                    /*
+                     * Поиск дочерних элементов.
+                     * После того как нашли потомка, добавляем его к родителю,
+                     * далее переходим к найденному потомку и ищем уже его потомков в общем массиве
+                     */
+                    if ($output[$outputLength][$aliases['id']] == $this->inputTmp[$inputLength][$aliases['parent']]) {
+
+                        if (!isset($outputArr[$outputLength][$aliases['child']])) {
+                            $outputArr[$outputLength][$aliases['child']] = [];
+                        }
+
+                        // Добавляем потомка в новый массив, к его родителю
+                        $outputArr[$outputLength][$aliases['child']][] = $this->inputTmp[$inputLength];
+
+                        // Удаляем чтобы повторно с ним не работать
+                        unset($this->inputTmp[$inputLength]);
+
+                        // Ищем потомков у найденного потомка
+                        $this->recursiveSearch($outputArr[$outputLength][$aliases['child']]);
+                    }
+                }
+            }
+
+            // Сортируем потомков
+            if (isset($outputArr[$outputLength][$aliases['child']])) {
+                $outputArr[$outputLength][$aliases['child']] = $this->sort($outputArr[$outputLength][$aliases['child']]);
+            }
+        }
+    }
+}
+
+--------------------------

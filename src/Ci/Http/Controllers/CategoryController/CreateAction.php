@@ -44,8 +44,8 @@ class CreateAction implements RequestHandlerInterface
             $this->validator->validate($command);
             $this->handler->handle($command);
 
-            return $response->withRedirect($response, '/category/list');
+            return $response->withRedirect($response, '/');
         }
-        return $this->view->render($response, 'controllers/category/create.php', ['title' => 'Создать категорию','categories' => $categories,'errors' => []]);
+        return $this->view->render($response, 'controllers/category/create.php', ['title' => 'Создать категорию','cat' => $categories,'errors' => []]);
     }
 }

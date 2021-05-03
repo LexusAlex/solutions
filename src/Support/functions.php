@@ -53,7 +53,7 @@ function buildTreeFromArray(
     string $pidKey = 'parent_id',
     string $idKey = 'id',
     string $childrenKey = 'children',
-    string $parent_id_start = '0'
+    int $parent_id_start = 0
 ): array {
 
     $children = [];
@@ -65,45 +65,46 @@ function buildTreeFromArray(
     }
 
     foreach ($items as &$item) {
-        if (isset($children[$item[$idKey]]))
+        if (isset($children[$item[$idKey]])){
             $item[$childrenKey] = $children[$item[$idKey]];
+        }
     }
 
     return $children[$parent_id_start];
 }
 
-function buildTreeFromArray2($items)
+function generate_data($max = 100): array
 {
-    $childs = [];
+    $array = [];
+    $test = [];
+    $parent = 0;
 
-    foreach ($items as &$item) {
-        $childs[$item['parent_id'] ?? 0][] = &$item;
+    for ($i = 1, $e = 0; $i <= $max; $i ++, $e ++) {
+
+        // random parent
+        switch (mt_rand(1, 4)) {
+            default:
+            case 1:
+                $parent = 0;
+                break;
+            case 2:
+                $parent = ceil($e / 2);
+                break;
+            case 3:
+                $parent = ceil($e / 3);
+                break;
+            case 4:
+                $parent = mt_rand(1, $max);
+                break;
+        }
+
+        $test['id'] = $i;
+        $test['title'] = 'tree_test_'.$i;
+        $test['parent'] = $parent;
+
+        $array[] = $test;
+        unset($test);
     }
 
-    unset($item);
-
-    foreach ($items as &$item) {
-        if (isset($childs[$item['id']])) {
-            $item['children'] = $childs[$item['id']];
-        }
-    }
-
-    return $childs[0] ?? [];
-}
-
-function output($arrayTree)
-{
-    $result = '';
-    $function = function ($tree) use (&$function, $result) {
-        foreach ($tree as $item => $value) {
-            $result .= $value['title'];
-            if (isset($value['children'])) {
-                $result .= '<ul>' . $function($value['children']) . '</ul>';
-            }
-            $result .= '</li>';
-        }
-        return $result;
-    };
-
-    return '<ul>' . $function($arrayTree) . '</ul>';
+    return $array;
 }
