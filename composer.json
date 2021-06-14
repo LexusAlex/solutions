@@ -34,7 +34,8 @@
         "symfony/yaml": "^5.2",
         "ramsey/uuid": "^4.1",
         "webmozart/assert": "^1.10",
-        "tuupola/slim-basic-auth": "^3.3"
+        "tuupola/slim-basic-auth": "^3.3",
+        "artnv/tree-builder": "^0.2.0"
     },
     "scripts": {
         "phinx": "phinx"
